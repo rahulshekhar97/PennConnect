@@ -1,0 +1,25 @@
+
+#link {
+  text-transform: uppercase;
+  margin: 2px;
+  font-weight: 200;
+  background: rgba(255, 255, 255, 1);
+  border: none;
+}
+
+#link:hover {
+  cursor: pointer;
+  font-weight: 800;
+  border-left: 2px solid #17822c;
+}
+
+#link:focus {outline:0;}
+
+#box {
+    padding: 20px;
+    margin-bottom: 4px;
+    background-color: #33b5e5;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    height: 60px;
+}
