@@ -2,6 +2,7 @@ var socket = io ();
 
 
 $(document).ready(function () {
+	socket.emit('create');
 	console.log('ready');
 	$('#send').click(function (e) {
 		console.log('clicked');
