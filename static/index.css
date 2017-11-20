@@ -12,7 +12,7 @@
 .right { float:right; background-color: #2b76ef; }
 
 #text {
-	width: 90%;
+	width: 80%;
 	height:35px;
 	font-size: 15px;
 }
@@ -21,10 +21,11 @@ input[type ="submit"] {
     border-radius: 10px;
     border-color: black;
     background-color: #58E3E7;
-    width: 80px;
+    width: 90px;
     height: 40px; 
     font-size:15px;
     margin-left:10px;
+    margin-right:10px;
 }
 
 

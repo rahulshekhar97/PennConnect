@@ -3,10 +3,16 @@ var socket = io ();
 
 $(document).ready(function () {
 	socket.emit('create');
+
+	socket.on('after disconnect', function () {
+		$('#send')
+	});
 	
 	socket.on('connected', function () {
+		var disconnect = '<input type = submit id =send value = Disconnect> </input>'
 		var html1 =  '<input type = text id=text> </input>'
 		var html2 =  '<input type = submit id =send value = Send> </input>'
+		$('#chatbox').append(disconnect);
 		$('#chatbox').append(html1);
 		$('#chatbox').append(html2);
 		$('p').remove();
@@ -30,10 +36,13 @@ $(document).ready(function () {
 
 	socket.on('chat message', function (msg){
 		$('#messages').append('<div class = left>' + msg + '</div>');
+		$('body').scrollTop($('body').scrollTop() + 40);
+		
 	});
 
 	socket.on('sender', function (msg) {
 		$('#messages').append('<div class = right>' + msg + '</div>');
+		$('body').scrollTop($('body').scrollTop() + 40);
 	});
 
 });

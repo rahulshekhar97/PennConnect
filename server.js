@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/register', function (req, res) {
-	res.render('session');
+	res.render('register');
 });
 
 app.get('/chat', function (req, res) {
@@ -34,6 +34,7 @@ io.on('connection', function (socket) {
 		for (var i = 0; i < keys.length; i++) {
 			if (keys[i].indexOf('room') != -1) {
 				if(obj[keys[i]].length == 1) {
+
 					rooms.push(keys[i]);
 				} 
 			}
