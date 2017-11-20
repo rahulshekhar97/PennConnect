@@ -1,3 +1,17 @@
-li {
-	color:red;
+
+#chatbox {
+	padding: 3px; 
+	width: 100%;
+	position: fixed; 
+	bottom: 0; 
 }
+
+.left, .right 
+{ clear: both; background-color: #dbedfe; padding: 10px; border-radius: 5px; margin-bottom: 10px; max-width: 200px; word-wrap: break-word } 
+.left { float: left } 
+.right { float:right }
+
+#text {
+	width: 90%;
+}
+

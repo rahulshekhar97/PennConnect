@@ -24,11 +24,6 @@ app.get('/chat', function (req, res) {
 	res.render('index');
 });
  
-
-
-
-var m = {};
-
 io.on('connection', function (socket) {
 	socket.on('create', function () {
 		// socket.join('room1');
@@ -47,6 +42,7 @@ io.on('connection', function (socket) {
 		if (rooms.length) {
 			var r = Math.floor(Math.random() * rooms.length);
 			socket.join(rooms[r]);
+			io.to(rooms[r]).emit('connected');
 			console.log(rooms[r]);
 		} else {
 			while (true) {
@@ -61,9 +57,11 @@ io.on('connection', function (socket) {
 	});
 	console.log('connected ' + socket.id);
 	socket.on('message', function (message) {
+		console.log(message);
 		var keys = Object.keys(socket.rooms);
 		var room = socket.rooms[keys[1]];
-		io.to(room.toString()).emit('chat message', message);
+		socket.broadcast.to(room.toString()).emit('chat message', message);
+		socket.emit('sender', message);
 	});
 });
 
