@@ -7,11 +7,24 @@
 }
 
 .left, .right 
-{ clear: both; background-color: #dbedfe; padding: 10px; border-radius: 5px; margin-bottom: 10px; max-width: 200px; word-wrap: break-word } 
-.left { float: left } 
-.right { float:right }
+{ clear: both; padding: 10px; border-radius: 5px; margin-bottom: 10px; max-width: 250px; word-wrap: break-word } 
+.left { float: left; background-color: #26bdef; } 
+.right { float:right; background-color: #2b76ef; }
 
 #text {
 	width: 90%;
+	height:35px;
+	font-size: 15px;
 }
+
+input[type ="submit"] {
+    border-radius: 10px;
+    border-color: black;
+    background-color: #58E3E7;
+    width: 80px;
+    height: 40px; 
+    font-size:15px;
+    margin-left:10px;
+}
+
 
