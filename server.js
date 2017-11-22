@@ -4,26 +4,94 @@ var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var cookieSession = require('cookie-session');
+var bodyParser = require('body-parser');
+var User = require('./User');
+
 
 app.engine('html', require('ejs').__express);
 app.set('view engine', 'html');
+
+app.use(cookieSession({
+  secret: 'SHHisASecret'
+}));
+
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.set('port', process.env.PORT || 3000);
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+
+// routes
+
 app.get('/', function (req, res) {
-	res.render('home');
+   console.log(req.session.username);
+  if (req.session.username && req.session.username !== '') {
+    res.redirect('/session');
+  } else {
+    res.redirect('/home');
+  }
 });
+
+app.post('/home', function(req, res) {
+   console.log('shit');
+  username = req.body.username;
+  password = req.body.password;
+  User.checkIfLegit(username, password, function(err, isRight) {
+    if (err) {
+      res.send('Error! ' + err);
+    } else {
+      if (isRight) {
+        req.session.username = username;
+        res.redirect('session');
+      } else {
+        res.send('wrong password');
+      }
+    }
+  });
+
+});
+
 
 app.get('/register', function (req, res) {
 	res.render('register');
+});
+
+app.post('/register', function(req, res) {
+  console.log('reached');
+  User.addUser(req.body.username, req.body.password, function(err) {
+    if (err) res.send('error' + err);
+    else res.send('new user registered with username ' + req.body.username);
+  });
+});
+
+app.get('/session', function(req, res) {
+   console.log(req.session.username);
+  if (!req.session.username || req.session.username === '') {
+    res.send('You tried to access a protected page');
+  } else {
+    res.render('session');
+  }
 });
 
 app.get('/chat', function (req, res) {
 	res.render('index');
 });
  
+app.get('/home', function (req, res) {
+  res.render('home');
+});
+
+app.get('/logout', function(req, res) {
+  req.session.username = '';
+  res.redirect('/home');
+});
+
+
+
+// socket.IO
+
 io.on('connection', function (socket) {
 	socket.on('create', function () {
 		// socket.join('room1');

@@ -17,6 +17,11 @@
 	font-size: 15px;
 }
 
+#messages {
+	height:650px;
+	overflow: auto;
+}
+
 input[type ="submit"] {
     border-radius: 10px;
     border-color: black;

@@ -3,7 +3,6 @@ var socket = io ();
 
 $(document).ready(function () {
 	socket.emit('create');
-
 	socket.on('after disconnect', function () {
 		$('#send')
 	});
@@ -36,13 +35,18 @@ $(document).ready(function () {
 
 	socket.on('chat message', function (msg){
 		$('#messages').append('<div class = left>' + msg + '</div>');
-		$('body').scrollTop($('body').scrollTop() + 40);
+		var x = 0.9 * $(document).height();
+		$('#messages').css('height', x + 'px');
+		$('#messages').scrollTop($('#messages').scrollTop() + 70);
+		
 		
 	});
 
 	socket.on('sender', function (msg) {
 		$('#messages').append('<div class = right>' + msg + '</div>');
-		$('body').scrollTop($('body').scrollTop() + 40);
+		var x = 0.9 * $(document).height();
+		$('#messages').css('height', x + 'px');
+		$('#messages').scrollTop($('#messages').scrollTop() + 70);
 	});
 
 });
