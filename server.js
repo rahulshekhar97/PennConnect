@@ -3,10 +3,11 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+const sgMail = require('@sendgrid/mail');
 
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
-var User = require('./User');
+var User = require('./db/User');
 
 
 app.engine('html', require('ejs').__express);
@@ -22,6 +23,17 @@ app.set('port', process.env.PORT || 3000);
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+
+// for email
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const msg = {
+  to: 'rshekhar@seas.upenn.edu',
+  from: 'rshekhar.hardyboys@gmail.com',
+  subject: 'Sending with SendGrid is Fun',
+  text: 'and easy to do anywhere, even with Node.js',
+  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+};
 
 // routes
 
@@ -60,7 +72,8 @@ app.get('/register', function (req, res) {
 
 app.post('/register', function(req, res) {
   console.log('reached');
-  User.addUser(req.body.username, req.body.password, function(err) {
+  sgMail.send(msg);
+  User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, function(err) {
     if (err) res.send('error' + err);
     else res.send('new user registered with username ' + req.body.username);
   });
@@ -76,11 +89,15 @@ app.get('/session', function(req, res) {
 });
 
 app.get('/chat', function (req, res) {
-	res.render('index');
+	res.render('chat');
 });
  
 app.get('/home', function (req, res) {
   res.render('home');
+});
+
+app.get('/friends', function (req, res) {
+	res.render('addfriends');
 });
 
 app.get('/logout', function(req, res) {
@@ -93,6 +110,8 @@ app.get('/logout', function(req, res) {
 // socket.IO
 
 io.on('connection', function (socket) {
+
+	// -------------------------------------------- ANONYMOUS CHAT STARTS  --------------------//
 	socket.on('create', function () {
 		// socket.join('room1');
 		var obj = io.sockets.adapter.rooms;
@@ -102,12 +121,15 @@ io.on('connection', function (socket) {
 		for (var i = 0; i < keys.length; i++) {
 			if (keys[i].indexOf('room') != -1) {
 				if(obj[keys[i]].length == 1) {
-
 					rooms.push(keys[i]);
 				} 
 			}
 		}
 
+		var chk = Object.keys(socket.rooms);
+		console.log('GOD');
+		console.log(chk);
+		console.log(socket.rooms);
 		if (rooms.length) {
 			var r = Math.floor(Math.random() * rooms.length);
 			socket.join(rooms[r]);
@@ -132,6 +154,9 @@ io.on('connection', function (socket) {
 		socket.broadcast.to(room.toString()).emit('chat message', message);
 		socket.emit('sender', message);
 	});
+	// -------------------------------------------- ANONYMOUS CHAT ENDS --------------------//
+
+
 });
 
 http.listen(app.get('port'), function() { 

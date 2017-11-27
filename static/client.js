@@ -8,6 +8,8 @@ $(document).ready(function () {
 	});
 	
 	socket.on('connected', function () {
+		$('#chatbox').empty();
+		$('#messages').empty();
 		var disconnect = '<input type = submit id =send value = Disconnect> </input>'
 		var html1 =  '<input type = text id=text> </input>'
 		var html2 =  '<input type = submit id =send value = Send> </input>'
@@ -38,7 +40,6 @@ $(document).ready(function () {
 		var x = 0.9 * $(document).height();
 		$('#messages').css('height', x + 'px');
 		$('#messages').scrollTop($('#messages').scrollTop() + 70);
-		
 		
 	});
 
