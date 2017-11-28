@@ -4,8 +4,10 @@
 	<title>Add Friends</title>
 </head>
 <body>
+	<% for (var i = 0; i < results.length; i++) { %>
+		<p> <%= results[i].username %> </p> 
+	<% } %>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-	<script src= 'static/bundle.js'></script>
 	<script src = 'static/addfriends.js'> </script>
 </body>
 </html>

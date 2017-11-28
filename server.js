@@ -3,7 +3,7 @@ var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-const sgMail = require('@sendgrid/mail');
+var sgMail = require('@sendgrid/mail');
 
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
@@ -27,7 +27,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 // for email
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
+var msg = {
   to: 'rshekhar@seas.upenn.edu',
   from: 'rshekhar.hardyboys@gmail.com',
   subject: 'Sending with SendGrid is Fun',
@@ -97,7 +97,19 @@ app.get('/home', function (req, res) {
 });
 
 app.get('/friends', function (req, res) {
-	res.render('addfriends');
+	var userMap = {};
+	var results = [];
+	User.find({}, function(err, users) {
+    	users.forEach(function(user) {
+      		console.log(user.username);
+      		var obj = {id : user._id, username : user.username};
+      		results.push(obj);
+      		userMap[user._id] = user.username;
+    	});
+    	console.log(results);
+    	res.render('addfriends', {results: results});
+    });
+	
 });
 
 app.get('/logout', function(req, res) {
