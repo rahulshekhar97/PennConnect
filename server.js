@@ -124,6 +124,13 @@ app.post('/session', function (req, res) {
 	});
 });
 
+// ----- Like ---- //
+
+
+app.get('/like', function (req, res) {
+	console.log('liked button on console');
+});
+
 // ---- SESSION routes end -- //
 
 app.get('/chat', function (req, res) {

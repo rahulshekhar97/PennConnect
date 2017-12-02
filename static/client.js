@@ -57,5 +57,16 @@ $(document).ready(function () {
 	});
 
 	// ---- code for like button ---//
+	$(document).on('click', '#like', function (e) {
+		console.log('liked');
+		 $.ajax(
+		   {url: '/like',
+		   	type: 'GET',
+		   	success : function (result) {
+
+		   	}
+    	   }
+    	 );
+	});
 
 });
