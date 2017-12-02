@@ -71,13 +71,14 @@ app.get('/register', function (req, res) {
 });
 
 app.post('/register', function(req, res) {
-  console.log('reached');
-  sgMail.send(msg);
+   console.log(req.body);
+  //sgMail.send(msg);
   User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, function(err) {
     if (err) res.send('error' + err);
     else res.send('new user registered with username ' + req.body.username);
   });
 });
+
 
 app.get('/session', function(req, res) {
    console.log(req.session.username);
@@ -96,21 +97,32 @@ app.get('/home', function (req, res) {
   res.render('home');
 });
 
+// ---- /friends routes ----//
+
 app.get('/friends', function (req, res) {
-	var userMap = {};
+	//var userMap = {};
 	var results = [];
 	User.find({}, function(err, users) {
     	users.forEach(function(user) {
       		console.log(user.username);
-      		var obj = {id : user._id, username : user.username};
+      		var obj = {id : user._id, firstname : user.firstname, lastname : user.lastname};
       		results.push(obj);
-      		userMap[user._id] = user.username;
+      		//userMap[user._id] = user.username;
     	});
-    	console.log(results);
+    	//console.log(results);
     	res.render('addfriends', {results: results});
     });
 	
 });
+
+app.post('/friends', function (req, res) {
+	console.log('POST FRIENDS');
+	console.log(req.session.username);
+	console.log(req.body);
+	res.send('added friends');
+});
+
+// --- //
 
 app.get('/logout', function(req, res) {
   req.session.username = '';

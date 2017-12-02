@@ -4,9 +4,16 @@
 	<title>Add Friends</title>
 </head>
 <body>
+	<h1> Add friends to your network!! </h1>
+
+	<form method="post">
+     
 	<% for (var i = 0; i < results.length; i++) { %>
-		<p> <%= results[i].username %> </p> 
+		<input type="checkbox" name  = <%= results[i].id %> > <%= results[i].firstname %> <%= results[i].lastname %> <br>
 	<% } %>
+		<br>
+		<input type="submit" value="Submit">
+	</form>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src = 'static/addfriends.js'> </script>
 </body>
