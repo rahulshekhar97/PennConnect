@@ -11,6 +11,7 @@
 
 </head>
 <body>
+  <!---- newsfeed code -->
   <div id = "newsfeed" style = "position:absolute;top:0;left:0;width:60%;height:100%; overflow: hidden; border:1px solid black;"> 
     <div class = "row">
      <button class="tablink">Chat</button>
@@ -19,13 +20,15 @@
      <button class="tablink"> <a href = '\logout'> Logout </a> </button>
     </div>
   </div>
+
+  <!--- post code -->
   <div id = "post" style = "position:absolute;top:0;left:60%;width:40%;height:40%; overflow: hidden; border:1px solid black;">
     <br>
     <div class = "row">
       <div class = "col-xs-offset-1" id = "form">
       <form method = "post">
         <div class = "post">
-        <textarea rows="4" cols="70" placeholder="Forget about your Penn Face! What's actually on your mind ;)"></textarea> 
+        <textarea rows="4" cols="70" name = "content" placeholder="Forget about your Penn Face! What's actually on your mind ;)"></textarea> 
         <p> Would you like this post to be anonymous? <br>
         <input type="radio" name="anonyes" value="Yes" checked> Yes<br>
       <input type="radio" name="anonno" value="No"> No <br>
@@ -35,6 +38,7 @@
     </div>
    </div>
   </div>
+  <!--- chat code -->
   <div id = "chat" style="position:absolute;top:40%;left:60%;width:40%;height:60%; overflow: hidden; border:1px solid black; " >
     <button type="button" id = "clicktochat">Click to Chat!</button>
 

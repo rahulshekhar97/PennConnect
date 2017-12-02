@@ -8,6 +8,7 @@ var sgMail = require('@sendgrid/mail');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var User = require('./db/User');
+var Post = require('./db/Post');
 
 
 app.engine('html', require('ejs').__express);
@@ -79,6 +80,7 @@ app.post('/register', function(req, res) {
   });
 });
 
+// --- session routes start --- ///
 
 app.get('/session', function(req, res) {
    console.log(req.session.username);
@@ -88,6 +90,19 @@ app.get('/session', function(req, res) {
     res.render('session');
   }
 });
+
+app.post('/session', function (req, res) {
+	console.log('POSTING');
+	console.log(req.body.content);
+	User.find({username: req.session.username}, function (err, users) {
+      Post.addPost(users[0], req.body.content, function(err) {
+        if (err) res.send('error' + err);
+        else res.render('session');
+  	  });
+	});
+});
+
+// ---- session routes end -- //
 
 app.get('/chat', function (req, res) {
 	res.render('chat');
@@ -179,7 +194,6 @@ io.on('connection', function (socket) {
 		socket.emit('sender', message);
 	});
 	// -------------------------------------------- ANONYMOUS CHAT ENDS --------------------//
-
 
 });
 
