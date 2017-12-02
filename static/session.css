@@ -87,6 +87,26 @@
     margin-left: 40%;
 }
 
+#poster {
+  margin:5px;
+  font-size: 22px;
+}
+
+#postcontent {
+  margin:5px;
+  font-size: 14 px;
+}
+
+#postnews {
+  display: inline-block;
+  border-radius:8px;
+  width:70%;
+  margin-left:15%;
+ 
+  border: 7px solid #bfbfbf;
+  padding: 15px;
+}
+
 #text {
   width: 30%;
   height:30px;

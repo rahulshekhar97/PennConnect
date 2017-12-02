@@ -56,4 +56,6 @@ $(document).ready(function () {
 		$('#messages').scrollTop($('#messages').scrollTop() + 70);
 	});
 
+	// ---- code for like button ---//
+
 });

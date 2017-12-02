@@ -19,6 +19,18 @@
      <button class="tablink">Profile</button>
      <button class="tablink"> <a href = '\logout'> Logout </a> </button>
     </div>
+    <br>
+    <br> 
+    <% for (var i = 0; i < posts.length; i++) { %>
+    <div id = "postnews">
+    <p id = "poster"> <%= posts[i].name %> </p>
+    <p id = "postcontent"> <%= posts[i].content %> </p>
+    <input type = submit id=like value = Like> </input>'
+    </div>
+    <br>
+    <br>
+  <% } %>
+    
   </div>
 
   <!--- post code -->

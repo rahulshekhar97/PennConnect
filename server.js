@@ -68,7 +68,7 @@ app.post('/home', function(req, res) {
 
 
 app.get('/register', function (req, res) {
-	res.render('register');
+  res.render('register');
 });
 
 app.post('/register', function(req, res) {
@@ -80,14 +80,36 @@ app.post('/register', function(req, res) {
   });
 });
 
-// --- session routes start --- ///
+// --- SESSION routes start --- ///
 
 app.get('/session', function(req, res) {
    console.log(req.session.username);
   if (!req.session.username || req.session.username === '') {
     res.send('You tried to access a protected page');
   } else {
-    res.render('session');
+  	var results = [];
+  	Post.find({}, function (err, posts) {
+  		var i = 0; 
+  		var n = posts.length;
+  		if (n == 0) {
+  			res.render('session', {posts: results});
+  		}
+  		posts.forEach(function (post){
+  			console.log('does it reach here');
+  			var content = post.content;
+  			var id  = post.author;
+  			var name = '';
+  			User.find({_id: id}, function (err, users) {
+  				name = users[0].firstname + ' ' + users[0].lastname;
+  				var obj = {content: content, name: name};
+  				results.push(obj);
+  				i++;
+  				if (i == n) {
+  					res.render('session', {posts: results});
+  				}
+  			});
+  		});
+  	});
   }
 });
 
@@ -97,12 +119,12 @@ app.post('/session', function (req, res) {
 	User.find({username: req.session.username}, function (err, users) {
       Post.addPost(users[0], req.body.content, function(err) {
         if (err) res.send('error' + err);
-        else res.render('session');
+        else res.redirect('/session');
   	  });
 	});
 });
 
-// ---- session routes end -- //
+// ---- SESSION routes end -- //
 
 app.get('/chat', function (req, res) {
 	res.render('chat');
