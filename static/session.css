@@ -23,3 +23,91 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     height: 60px;
 }
+
+.tablink {
+    background-color: #5A80EA;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
+
+.tablink:hover {
+    background-color: #777;
+}
+
+/* Style the tab content */
+.tabcontent {
+    color: white;
+    display: none;
+    padding: 50px;
+    text-align: center;
+}
+
+
+#send {
+    width: 50px;
+    height: 30px; 
+}
+
+
+.post {
+    width:95%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding:10px;
+}
+
+
+#chatbox {
+  padding: 3px; 
+  width: 100%;
+  position: fixed; 
+  bottom: 0; 
+}
+
+.left, .right 
+{ clear: both; padding: 10px; border-radius: 5px; margin-bottom: 10px; max-width: 250px; word-wrap: break-word } 
+.left { float: left; background-color: #26bdef; } 
+.right { float:right; background-color: #2b76ef; }
+
+#clicktochat {
+
+    border-color: black;
+    background-color: #58E3E7;
+    width: 30%;
+    height: 50px; 
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top:40%;
+    margin-left: 40%;
+}
+
+#text {
+  width: 30%;
+  height:30px;
+  font-size:15px;
+}
+
+#messages {
+  height:650px;
+  overflow: auto;
+}
+
+#postbutton {
+    border-radius: 10px;
+    border-color: black;
+    background-color: #58E3E7;
+    width: 45px;
+    height: 35px; 
+    font-size:13px;
+    margin-left:5px;
+    margin-right:5px;
+}
+
+
+

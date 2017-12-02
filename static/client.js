@@ -2,7 +2,14 @@ var socket = io ();
 
 
 $(document).ready(function () {
-	socket.emit('create');
+	//socket.emit('create');
+	$(document).on('click', '#clicktochat', function() {
+		console.log('button clicked!');
+		socket.emit('create');
+		$('#clicktochat').remove();
+		$('#connect').append('<p id = "wait"> Waiting to be Connected! </p>');
+	});
+
 	socket.on('after disconnect', function () {
 		$('#send')
 	});
@@ -10,13 +17,13 @@ $(document).ready(function () {
 	socket.on('connected', function () {
 		$('#chatbox').empty();
 		$('#messages').empty();
-		var disconnect = '<input type = submit id =send value = Disconnect> </input>'
+		var disconnect = '<input type = submit id=send value = End> </input>'
 		var html1 =  '<input type = text id=text> </input>'
-		var html2 =  '<input type = submit id =send value = Send> </input>'
+		var html2 =  '<input type = submit id=send value = Send> </input>'
 		$('#chatbox').append(disconnect);
 		$('#chatbox').append(html1);
 		$('#chatbox').append(html2);
-		$('p').remove();
+		$('#wait').remove();
 		console.log('connected');
 	});
 
@@ -37,15 +44,14 @@ $(document).ready(function () {
 
 	socket.on('chat message', function (msg){
 		$('#messages').append('<div class = left>' + msg + '</div>');
-		var x = 0.9 * $(document).height();
+		var x = 0.55 * $(document).height();
 		$('#messages').css('height', x + 'px');
 		$('#messages').scrollTop($('#messages').scrollTop() + 70);
-		
 	});
 
 	socket.on('sender', function (msg) {
 		$('#messages').append('<div class = right>' + msg + '</div>');
-		var x = 0.9 * $(document).height();
+		var x = 0.55 * $(document).height();
 		$('#messages').css('height', x + 'px');
 		$('#messages').scrollTop($('#messages').scrollTop() + 70);
 	});
