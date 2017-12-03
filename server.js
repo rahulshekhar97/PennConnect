@@ -100,8 +100,11 @@ app.get('/session', function(req, res) {
   			var likes = post.likes.length;
   			var id  = post.author;
   			var name = '';
+  			if (post.anonymous == 'Yes')
+  				name = 'Anonymous'
   			User.find({_id: id}, function (err, users) {
-  				name = users[0].firstname + ' ' + users[0].lastname;
+  				if (name == '')
+  					name = users[0].firstname + ' ' + users[0].lastname;
   				var obj = {id : post._id, content: content, name: name, likes: likes};
   				results.push(obj);
   				i++;
@@ -118,7 +121,7 @@ app.post('/session', function (req, res) {
 	console.log('POSTING');
 	console.log(req.body.content);
 	User.find({username: req.session.username}, function (err, users) {
-      Post.addPost(users[0], req.body.content, function(err) {
+      Post.addPost(users[0], req.body.content, req.body.anon, function(err) {
         if (err) res.send('error' + err);
         else res.redirect('/session');
   	  });
