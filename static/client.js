@@ -57,8 +57,15 @@ $(document).ready(function () {
 	});
 
 	// ---- code for like button ---//
-	$(document).on('click', '#like', function (e) {
-		var link = '/like/' + $(this).attr('data');
+	$(document).on('click', '.btn-secondary', function (e) {
+		var likes = parseInt($(this).html());
+		var ok = $(this).attr('data-like');
+		if (ok == '0') {
+			likes++;
+			$(this).attr('data-like', '1');
+		}
+		$(this).html(' ' + likes);
+		var link = '/like/' + $(this).attr('data-id');
 		console.log(link);
 		 $.ajax(
 		   {url: link,
