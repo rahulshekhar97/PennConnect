@@ -25,7 +25,7 @@
     <div id = "postnews">
     <p id = "poster"> <%= posts[i].name %> </p>
     <p id = "postcontent"> <%= posts[i].content %> </p>
-    <button class='btn-secondary fa fa-heart' id = 'like' data-like = 0 data-id = <%= posts[i].id %> >  <%= posts[i].likes %> </button>
+    <button class='btn-secondary fa fa-heart' id = 'like' data-like = <%= posts[i].likedboolean %> data-id = <%= posts[i].id %> >  <%= posts[i].likes %> </button>
     </div>
     <br>
     <br>

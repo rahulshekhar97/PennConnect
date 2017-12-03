@@ -94,23 +94,35 @@ app.get('/session', function(req, res) {
   		if (n == 0) {
   			res.render('session', {posts: results});
   		}
-  		posts.forEach(function (post){
-  			console.log('does it reach here');
-  			var content = post.content;
-  			var likes = post.likes.length;
-  			var id  = post.author;
-  			var name = '';
-  			if (post.anonymous == 'Yes')
+  		User.findOne({username: req.session.username}, function (err, currUser) {
+  			// curruser is the current session user
+  			posts.forEach(function (post){
+  			  console.log('does it reach here');
+  			  var content = post.content;
+  			  var likes = post.likes.length;
+  			  var id  = post.author;
+  			  var name = '';
+  			  var likedhtmlid = '0';
+  			  var likedids = post.likes;
+  			  console.log("SESSION");
+  			  console.log(likedids);
+  			  var currid = currUser._id;
+  			  if(likedids.indexOf(currid) != -1) { // post has been liked
+  			  	likedhtmlid = '1';
+  			  }   			 
+  			   // need to check if curruser has already liked the post
+  			  if (post.anonymous == 'Yes')
   				name = 'Anonymous'
-  			User.find({_id: id}, function (err, users) {
-  				if (name == '')
-  					name = users[0].firstname + ' ' + users[0].lastname;
-  				var obj = {id : post._id, content: content, name: name, likes: likes};
-  				results.push(obj);
-  				i++;
-  				if (i == n) {
-  					res.render('session', {posts: results});
-  				}
+  			  User.find({_id: id}, function (err, users) {
+  				 if (name == '')
+  				   name = users[0].firstname + ' ' + users[0].lastname;
+  				 var obj = {id : post._id, content: content, name: name, likes: likes, likedboolean: likedhtmlid};
+  				 results.push(obj);
+  				 i++;
+  				 if (i == n) {
+  			       res.render('session', {posts: results});
+  				 }
+  			  });
   			});
   		});
   	});
@@ -168,6 +180,8 @@ app.get('/like/:id', function (req, res) {
 	});
 });
 
+// ----- LIKE routes end ---- //
+
 // ---- SESSION routes end -- //
 
 app.get('/chat', function (req, res) {
@@ -203,7 +217,7 @@ app.post('/friends', function (req, res) {
 	res.send('added friends');
 });
 
-// --- //
+// ---  friends routes end ---//
 
 app.get('/logout', function(req, res) {
   req.session.username = '';
