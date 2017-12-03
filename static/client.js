@@ -58,9 +58,10 @@ $(document).ready(function () {
 
 	// ---- code for like button ---//
 	$(document).on('click', '#like', function (e) {
-		console.log('liked');
+		var link = '/like/' + $(this).attr('data');
+		console.log(link);
 		 $.ajax(
-		   {url: '/like',
+		   {url: link,
 		   	type: 'GET',
 		   	success : function (result) {
 

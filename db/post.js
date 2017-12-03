@@ -6,9 +6,9 @@ var bcrypt = require('bcrypt');
 var postSchema = Schema({
   author: {type: Schema.Types.ObjectId, ref: 'User' },
   content: String,
-  //likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+  likes: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
-
+ 
 postSchema.statics.addPost = function(user, content, cb) {
   var newPost = new this({ author: user, content: content});
   newPost.save(cb);

@@ -97,11 +97,12 @@ app.get('/session', function(req, res) {
   		posts.forEach(function (post){
   			console.log('does it reach here');
   			var content = post.content;
+  			var likes = post.likes.length;
   			var id  = post.author;
   			var name = '';
   			User.find({_id: id}, function (err, users) {
   				name = users[0].firstname + ' ' + users[0].lastname;
-  				var obj = {content: content, name: name};
+  				var obj = {id : post._id, content: content, name: name, likes: likes};
   				results.push(obj);
   				i++;
   				if (i == n) {
@@ -127,8 +128,41 @@ app.post('/session', function (req, res) {
 // ----- Like ---- //
 
 
-app.get('/like', function (req, res) {
-	console.log('liked button on console');
+app.get('/like/:id', function (req, res) {
+	var id = req.params.id;
+	Post.findOne({_id : id}, function (err, post) {
+		var n = post.likes.length;
+    	User.findOne({username: req.session.username}, function (err, user) {
+    		if (n == 0) {
+    			post.likes.push(user);
+    			post.save(function (err) {
+    					  if (err) throw err;
+    					  console.log('user liked');
+    		    });
+    			return;
+    		}
+    		var curr = 0;
+    		var same = 0;
+    		for (var i = 0; i < n; i++) {
+    			var currId = post.likes[i];
+    			console.log('printing id' + currId);
+    			User.findOne({_id: currId}, function (err, newuser) {
+    				if (newuser.username == req.session.username) {
+    					same++;
+    				}
+    				curr++;
+    				console.log('dude i reached here' + ' ' + curr);
+    				if (curr == n && !same) {
+    					post.likes.push(user);
+    					post.save(function (err) {
+    					  if (err) throw err;
+    					  console.log('user liked');
+    		            });
+    				}
+    			});
+    		}
+    	});	
+	});
 });
 
 // ---- SESSION routes end -- //
