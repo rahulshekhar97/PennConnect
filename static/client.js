@@ -4,7 +4,6 @@ var socket = io ();
 $(document).ready(function () {
 	//socket.emit('create');
 	$(document).on('click', '#clicktochat', function() {
-		console.log('button clicked!');
 		socket.emit('create');
 		$('#clicktochat').remove();
 		$('#connect').append('<p id = "wait"> Waiting to be Connected! </p>');
@@ -61,7 +60,7 @@ $(document).ready(function () {
 		var likes = parseInt($(this).html());
 		var ok = $(this).attr('data-like');
 		if (ok == '0') {
-			likes++;
+		  	likes++;
 			$(this).attr('data-like', '1');
 		}
 		$(this).html(' ' + likes);

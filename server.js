@@ -38,11 +38,14 @@ var msg = {
 
 // routes
 
+var homepage = {text: ""};
+
 app.get('/', function (req, res) {
    console.log(req.session.username);
   if (req.session.username && req.session.username !== '') {
     res.redirect('/session');
   } else {
+  	homepage.text = "";
     res.redirect('/home');
   }
 });
@@ -53,19 +56,21 @@ app.post('/home', function(req, res) {
   password = req.body.password;
   User.checkIfLegit(username, password, function(err, isRight) {
     if (err) {
-      res.send('Error! ' + err);
+      homepage.text = "Username or Password was wrong";
+      res.redirect('/home');
     } else {
       if (isRight) {
         req.session.username = username;
         res.redirect('session');
       } else {
-        res.send('wrong password');
+      	homepage.text = "Username or Password was wrong!";
+      	res.redirect('/home');
+        //res.send('wrong password');
       }
     }
   });
 
 });
-
 
 app.get('/register', function (req, res) {
   res.render('register');
@@ -76,7 +81,11 @@ app.post('/register', function(req, res) {
   //sgMail.send(msg);
   User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, function(err) {
     if (err) res.send('error' + err);
-    else res.send('new user registered with username ' + req.body.username);
+    else { 
+    	//res.send('new user registered with username ' + req.body.username);
+    	homepage.text = "New User Succesfully Registered! Log in!";
+    	res.redirect('/home');
+    }
   });
 });
 
@@ -189,7 +198,7 @@ app.get('/chat', function (req, res) {
 });
  
 app.get('/home', function (req, res) {
-  res.render('home');
+  res.render('home', {homepage});
 });
 
 // ---- /friends routes ----//
@@ -221,6 +230,7 @@ app.post('/friends', function (req, res) {
 
 app.get('/logout', function(req, res) {
   req.session.username = '';
+  homepage.text = "";
   res.redirect('/home');
 });
 
@@ -246,15 +256,12 @@ io.on('connection', function (socket) {
 		}
 
 		var chk = Object.keys(socket.rooms);
-		console.log('GOD');
-		console.log(chk);
-		console.log(socket.rooms);
-		if (rooms.length) {
+		if (rooms.length) {					// some room exists for a user to join
 			var r = Math.floor(Math.random() * rooms.length);
 			socket.join(rooms[r]);
 			io.to(rooms[r]).emit('connected');
 			console.log(rooms[r]);
-		} else {
+		} else {   							
 			while (true) {
 				var r = Math.floor(Math.random() * 1000);
 				var join = 'room' + r;
@@ -273,6 +280,13 @@ io.on('connection', function (socket) {
 		socket.broadcast.to(room.toString()).emit('chat message', message);
 		socket.emit('sender', message);
 	});
+
+	// disconnecting function
+
+	socket.on ('disconnect', function () {
+
+	});
+
 	// -------------------------------------------- ANONYMOUS CHAT ENDS --------------------//
 
 });

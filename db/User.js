@@ -4,10 +4,11 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 
 var userSchema = new Schema({
-  firstname: { type: String, required: true },
+  firstname: {type: String, required: true },
   lastname: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true }
+
 });
 
 userSchema.pre('save', function(next) {
@@ -26,6 +27,8 @@ userSchema.pre('save', function(next) {
     });
   });
 });
+
+
 
 userSchema.statics.addUser = function(firstname, lastname, username, password, cb) {
   var newUser = new this({ firstname: firstname, lastname: lastname, username: username, password: password});
