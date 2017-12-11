@@ -3,6 +3,9 @@ var socket = io ();
 
 $(document).ready(function () {
 	//socket.emit('create');
+
+	// ---- After the user attempts to connect with someone --- //
+
 	$(document).on('click', '#clicktochat', function() {
 		socket.emit('create');
 		$('#clicktochat').remove();
@@ -28,7 +31,7 @@ $(document).ready(function () {
 
 	socket.on('restore', function () {
 		$('#chatbox').empty();
-		var chatbutton = '<button type="button" id = "clicktochat2">Click to Chat again!</button>';
+		var chatbutton = '<button type="button" id = "clicktochat2"> Disconnected! Click to Chat Again!</button>';
 		$('#chatbox').append(chatbutton);
 	});
 
