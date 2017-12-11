@@ -9,16 +9,37 @@ $(document).ready(function () {
 		$('#connect').append('<p id = "wait"> Waiting to be Connected! </p>');
 	});
 
-	socket.on('after disconnect', function () {
-		$('#send')
+	$(document).on('click', '#clicktochat2', function() {
+		socket.emit('create');
+		$('#chatbox').empty();
+		$('#messages').empty();
+		$('#connect').append('<p id = "wait"> Waiting to be Connected! </p>');
 	});
+
+	// ----- handles disconnet operations ---- //
+
+	socket.on('predisc', function () {
+		socket.emit('disconnectroom');
+	});
+
+	socket.on('after disconnect', function () {
+		console.log('reached after disconnect function');
+	});
+
+	socket.on('restore', function () {
+		$('#chatbox').empty();
+		var chatbutton = '<button type="button" id = "clicktochat2">Click to Chat again!</button>';
+		$('#chatbox').append(chatbutton);
+	});
+
+	// --- disconnecting operations end -----//
 	
 	socket.on('connected', function () {
 		$('#chatbox').empty();
 		$('#messages').empty();
-		var disconnect = '<input type = submit id=send value = End> </input>'
+		var disconnect = '<input type = submit id=send2 value = End> </input>'
 		var html1 =  '<input type = text id=text> </input>'
-		var html2 =  '<input type = submit id=send value = Send> </input>'
+		var html2 =  '<input type = submit id=send1 value = Send> </input>'
 		$('#chatbox').append(disconnect);
 		$('#chatbox').append(html1);
 		$('#chatbox').append(html2);
@@ -26,7 +47,14 @@ $(document).ready(function () {
 		console.log('connected');
 	});
 
-	$(document).on('click', '#send', function (e) {
+	$(document).on('click', '#send2', function (e) {
+		console.log('clicked');
+		e.preventDefault();
+		socket.emit('disconnecting');
+		//$('#text').val("");
+	});
+
+	$(document).on('click', '#send1', function (e) {
 		console.log('clicked');
 		e.preventDefault();
 		socket.emit('message', $("#text").val());

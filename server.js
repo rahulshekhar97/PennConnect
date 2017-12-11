@@ -244,7 +244,7 @@ io.on('connection', function (socket) {
 	socket.on('create', function () {
 		// socket.join('room1');
 		var obj = io.sockets.adapter.rooms;
-		var keys = Object.keys(io.sockets.adapter.rooms);
+		var keys = Object.keys(io.sockets.adapter.rooms); // gets all rooms
 		// get rooms which can be filled 
 		var rooms = [];
 		for (var i = 0; i < keys.length; i++) {
@@ -274,6 +274,7 @@ io.on('connection', function (socket) {
 	});
 	console.log('connected ' + socket.id);
 	socket.on('message', function (message) {
+		console.log('IN MESSAGE FUNCTION');
 		console.log(message);
 		var keys = Object.keys(socket.rooms);
 		var room = socket.rooms[keys[1]];
@@ -283,8 +284,25 @@ io.on('connection', function (socket) {
 
 	// disconnecting function
 
-	socket.on ('disconnect', function () {
+	socket.on('disconnectroom', function () {
+		var keys = Object.keys(socket.rooms);
+		var room = socket.rooms[keys[1]];
+		if (room != undefined) {
+			console.log(room.toString());
+			socket.leave(room.toString());
+			socket.emit('restore');
+			console.log('In disconnect room!');
+		}
+	});
 
+	socket.on('disconnecting', function () {
+		//console.log(Object.keys(socket.rooms));
+		var keys = Object.keys(socket.rooms);
+		var room = socket.rooms[keys[1]];
+		if (room != undefined) {
+			io.sockets.in(room.toString()).emit('predisc');
+		}
+		//socket.broadcast.to(room.toString()).emit('predisc');
 	});
 
 	// -------------------------------------------- ANONYMOUS CHAT ENDS --------------------//
