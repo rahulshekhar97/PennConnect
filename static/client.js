@@ -26,7 +26,7 @@ $(document).ready(function () {
 	});
 
 	socket.on('after disconnect', function () {
-		console.log('reached after disconnect function');
+		// console.log('reached after disconnect function');
 	});
 
 	socket.on('restore', function () {
@@ -47,18 +47,18 @@ $(document).ready(function () {
 		$('#chatbox').append(html1);
 		$('#chatbox').append(html2);
 		$('#wait').remove();
-		console.log('connected');
+		// console.log('connected');
 	});
 
 	$(document).on('click', '#send2', function (e) {
-		console.log('clicked');
+		// console.log('clicked');
 		e.preventDefault();
 		socket.emit('disconnecting');
 		//$('#text').val("");
 	});
 
 	$(document).on('click', '#send1', function (e) {
-		console.log('clicked');
+		// console.log('clicked');
 		e.preventDefault();
 		socket.emit('message', $("#text").val());
 		$('#text').val("");
@@ -96,7 +96,7 @@ $(document).ready(function () {
 		}
 		$(this).html(' ' + likes);
 		var link = '/like/' + $(this).attr('data-id');
-		console.log(link);
+		// console.log(link);
 		 $.ajax(
 		   {url: link,
 		   	type: 'GET',

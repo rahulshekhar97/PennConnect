@@ -41,7 +41,7 @@ var msg = {
 var homepage = {text: ""};
 
 app.get('/', function (req, res) {
-   console.log(req.session.username);
+   // console.log(req.session.username);
   if (req.session.username && req.session.username !== '') {
     res.redirect('/session');
   } else {
@@ -51,7 +51,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/home', function(req, res) {
-   console.log('shit');
+   // console.log('shit');
   username = req.body.username;
   password = req.body.password;
   User.checkIfLegit(username, password, function(err, isRight) {
@@ -77,7 +77,7 @@ app.get('/register', function (req, res) {
 });
 
 app.post('/register', function(req, res) {
-   console.log(req.body);
+   // console.log(req.body);
   //sgMail.send(msg);
   User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, function(err) {
     if (err) res.send('error' + err);
@@ -92,7 +92,7 @@ app.post('/register', function(req, res) {
 // --- SESSION routes start --- ///
 
 app.get('/session', function(req, res) {
-   console.log(req.session.username);
+   // console.log(req.session.username);
   if (!req.session.username || req.session.username === '') {
     res.send('You tried to access a protected page');
   } else {
@@ -106,15 +106,15 @@ app.get('/session', function(req, res) {
   		User.findOne({username: req.session.username}, function (err, currUser) {
   			// curruser is the current session user
   			posts.forEach(function (post){
-  			  console.log('does it reach here');
+  			  // console.log('does it reach here');
   			  var content = post.content;
   			  var likes = post.likes.length;
   			  var id  = post.author;
   			  var name = '';
   			  var likedhtmlid = '0';
   			  var likedids = post.likes;
-  			  console.log("SESSION");
-  			  console.log(likedids);
+  			  // console.log("SESSION");
+  			  // console.log(likedids);
   			  var currid = currUser._id;
   			  if(likedids.indexOf(currid) != -1) { // post has been liked
   			  	likedhtmlid = '1';
@@ -139,8 +139,8 @@ app.get('/session', function(req, res) {
 });
 
 app.post('/session', function (req, res) {
-	console.log('POSTING');
-	console.log(req.body.content);
+	// console.log('POSTING');
+	// console.log(req.body.content);
 	User.find({username: req.session.username}, function (err, users) {
       Post.addPost(users[0], req.body.content, req.body.anon, function(err) {
         if (err) res.send('error' + err);
@@ -161,7 +161,7 @@ app.get('/like/:id', function (req, res) {
     			post.likes.push(user);
     			post.save(function (err) {
     					  if (err) throw err;
-    					  console.log('user liked');
+    					  // console.log('user liked');
     		    });
     			return;
     		}
@@ -169,18 +169,18 @@ app.get('/like/:id', function (req, res) {
     		var same = 0;
     		for (var i = 0; i < n; i++) {
     			var currId = post.likes[i];
-    			console.log('printing id' + currId);
+    			// console.log('printing id' + currId);
     			User.findOne({_id: currId}, function (err, newuser) {
     				if (newuser.username == req.session.username) {
     					same++;
     				}
     				curr++;
-    				console.log('dude i reached here' + ' ' + curr);
+    				// console.log('dude i reached here' + ' ' + curr);
     				if (curr == n && !same) {
     					post.likes.push(user);
     					post.save(function (err) {
     					  if (err) throw err;
-    					  console.log('user liked');
+    					  // console.log('user liked');
     		            });
     				}
     			});
@@ -208,21 +208,21 @@ app.get('/friends', function (req, res) {
 	var results = [];
 	User.find({}, function(err, users) {
     	users.forEach(function(user) {
-      		console.log(user.username);
+      		// console.log(user.username);
       		var obj = {id : user._id, firstname : user.firstname, lastname : user.lastname};
       		results.push(obj);
       		//userMap[user._id] = user.username;
     	});
-    	//console.log(results);
+    	//// console.log(results);
     	res.render('addfriends', {results: results});
     });
 	
 });
 
 app.post('/friends', function (req, res) {
-	console.log('POST FRIENDS');
-	console.log(req.session.username);
-	console.log(req.body);
+	// console.log('POST FRIENDS');
+	// console.log(req.session.username);
+	// console.log(req.body);
 	res.send('added friends');
 });
 
@@ -260,7 +260,7 @@ io.on('connection', function (socket) {
 			var r = Math.floor(Math.random() * rooms.length);
 			socket.join(rooms[r]);
 			io.to(rooms[r]).emit('connected');
-			console.log(rooms[r]);
+			// console.log(rooms[r]);
 		} else {   							
 			while (true) {
 				var r = Math.floor(Math.random() * 1000);
@@ -272,10 +272,10 @@ io.on('connection', function (socket) {
 		    }
 		}
 	});
-	console.log('connected ' + socket.id);
+	// console.log('connected ' + socket.id);
 	socket.on('message', function (message) {
-		console.log('IN MESSAGE FUNCTION');
-		console.log(message);
+		// console.log('IN MESSAGE FUNCTION');
+		// console.log(message);
 		var keys = Object.keys(socket.rooms);
 		var room = socket.rooms[keys[1]];
 		socket.broadcast.to(room.toString()).emit('chat message', message);
@@ -288,15 +288,15 @@ io.on('connection', function (socket) {
 		var keys = Object.keys(socket.rooms);
 		var room = socket.rooms[keys[1]];
 		if (room != undefined) {
-			console.log(room.toString());
+			// console.log(room.toString());
 			socket.leave(room.toString());
 			socket.emit('restore');
-			console.log('In disconnect room!');
+			// console.log('In disconnect room!');
 		}
 	});
 
 	socket.on('disconnecting', function () {
-		//console.log(Object.keys(socket.rooms));
+		//// console.log(Object.keys(socket.rooms));
 		var keys = Object.keys(socket.rooms);
 		var room = socket.rooms[keys[1]];
 		if (room != undefined) {
@@ -310,5 +310,5 @@ io.on('connection', function (socket) {
 });
 
 http.listen(app.get('port'), function() { 
-  console.log('listening');
+  // console.log('listening');
 });
