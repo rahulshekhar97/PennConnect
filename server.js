@@ -136,12 +136,12 @@ app.get('/session', function(req, res) {
   			  User.find({_id: id}, function (err, users) {
   				 if (name == '')
   				   name = users[0].firstname + ' ' + users[0].lastname;
-           if (post.tags[0] === searchtext || searchtext === '') {
+           if (post.tags.indexOf(searchtext) != -1 || searchtext === '') {
   				   var obj = {id : post._id, content: content, name: name, likes: likes, likedboolean: likedhtmlid};
   				   results.push(obj);
            }
   				 i++;
-  				 if (i == n) {
+  				 if (i === n) {
                //console.log(results);
                console.log('searchtext' + searchtext);
                searchtext = '';

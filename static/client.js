@@ -95,6 +95,9 @@ $(document).ready(function () {
 				console.log(searchtext);
 				var link = '/session/' + searchtext;
 				console.log(link);
+				if (searchtext === '') {
+					link = '/session';
+				}
 				window.location.href = link;
      		}	
 	});
@@ -103,6 +106,9 @@ $(document).ready(function () {
 		var searchtext = $('#sessiontags').val();
 		console.log(searchtext);
 		var link = '/session/' + searchtext;
+		if (searchtext === '') {
+			link = '/session';
+		}
 		console.log(link);
 		window.location.href = link;
 		/*

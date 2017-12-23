@@ -123,6 +123,9 @@
   padding: 15px;
 }
 
+#tagstext {
+  width: 50%;
+}
 
 #text {
   width: 30%;
