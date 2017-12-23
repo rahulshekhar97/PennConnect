@@ -86,6 +86,38 @@ $(document).ready(function () {
 		$('#messages').scrollTop($('#messages').scrollTop() + 70);
 	});
 
+	// ----- code for search button ----- //
+
+	$(document).on('keydown', '#sessiontags', function (e) {
+		var keyCode = e.keyCode || e.which;
+        	if (keyCode === 13) {
+        		var searchtext = $('#sessiontags').val();
+				console.log(searchtext);
+				var link = '/session/' + searchtext;
+				console.log(link);
+				window.location.href = link;
+     		}	
+	});
+
+	$(document).on('click', '#searchbutton', function (e) {
+		var searchtext = $('#sessiontags').val();
+		console.log(searchtext);
+		var link = '/session/' + searchtext;
+		console.log(link);
+		window.location.href = link;
+		/*
+		 $.ajax(
+		   {url: link,
+		   	type: 'GET',
+		   	async = false,
+		   	success : function (result) {
+		   		console.log('SUCCESS AJAX REQUEST');
+		   	}
+    	   }
+    	 );
+    	 */
+	});
+
 	// ---- code for like button ---//
 	$(document).on('click', '.btn-secondary', function (e) {
 		var likes = parseInt($(this).html());

@@ -17,7 +17,11 @@
      <button class="tablink" onclick = "window.location.href = '/logout'">  Logout </button>
     </div>
     <br>
-    <br> 
+    <div class = "search">
+      <input type = "text" id = "sessiontags"> 
+      <input type="submit" id = "searchbutton" value = "Search!">
+    </div>
+    <br>
     <% for (var i = 0; i < posts.length; i++) { %>
     <div id = "postnews">
     <p id = "poster"> <%= posts[i].name %> </p>
@@ -41,6 +45,7 @@
           <p> Would you like this post to be anonymous? <br>
           <input type="radio" name="anon" value="Yes" checked> Yes<br>
           <input type="radio" name="anon" value="No"> No <br>
+          <input type="text" name = "tags"> <br> 
            <p> <input type="submit" id = "postbutton" value = "Post!"> </p>
         </div>
       </form>

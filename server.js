@@ -91,8 +91,19 @@ app.post('/register', function(req, res) {
 
 // --- SESSION routes start --- ///
 
+var searchtext = '';
+
+
+app.get('/session/:id', function (req, res) {
+  searchtext = req.params.id;
+  console.log('reached to the parameter');
+  res.redirect('/session');
+});
+
+
 app.get('/session', function(req, res) {
    // console.log(req.session.username);
+   console.log('what is this');
   if (!req.session.username || req.session.username === '') {
     res.send('You tried to access a protected page');
   } else {
@@ -105,7 +116,7 @@ app.get('/session', function(req, res) {
   		}
   		User.findOne({username: req.session.username}, function (err, currUser) {
   			// curruser is the current session user
-  			posts.forEach(function (post){
+  			posts.forEach(function (post) {
   			  // console.log('does it reach here');
   			  var content = post.content;
   			  var likes = post.likes.length;
@@ -125,10 +136,15 @@ app.get('/session', function(req, res) {
   			  User.find({_id: id}, function (err, users) {
   				 if (name == '')
   				   name = users[0].firstname + ' ' + users[0].lastname;
-  				 var obj = {id : post._id, content: content, name: name, likes: likes, likedboolean: likedhtmlid};
-  				 results.push(obj);
+           if (post.tags[0] === searchtext || searchtext === '') {
+  				   var obj = {id : post._id, content: content, name: name, likes: likes, likedboolean: likedhtmlid};
+  				   results.push(obj);
+           }
   				 i++;
   				 if (i == n) {
+               //console.log(results);
+               console.log('searchtext' + searchtext);
+               searchtext = '';
   			       res.render('session', {posts: results});
   				 }
   			  });
@@ -139,10 +155,10 @@ app.get('/session', function(req, res) {
 });
 
 app.post('/session', function (req, res) {
-	// console.log('POSTING');
+  //console.log('POSTING');
 	// console.log(req.body.content);
 	User.find({username: req.session.username}, function (err, users) {
-      Post.addPost(users[0], req.body.content, req.body.anon, function(err) {
+      Post.addPost(users[0], req.body.content, req.body.anon, req.body.tags, function(err) {
         if (err) res.send('error' + err);
         else res.redirect('/session');
   	  });
@@ -153,6 +169,7 @@ app.post('/session', function (req, res) {
 
 
 app.get('/like/:id', function (req, res) {
+  //console.log(req.params.id);
 	var id = req.params.id;
 	Post.findOne({_id : id}, function (err, post) {
 		var n = post.likes.length;

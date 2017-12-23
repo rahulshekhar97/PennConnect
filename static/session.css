@@ -123,6 +123,7 @@
   padding: 15px;
 }
 
+
 #text {
   width: 30%;
   height:30px;
@@ -132,6 +133,25 @@
 #messages {
   height:650px;
   overflow: auto;
+}
+
+.search {
+  margin-left: 30%;
+}
+
+#sessiontags {
+  width:50%;
+}
+
+#searchbutton {
+    border-radius: 10px;
+    border-color: black;
+    background-color: #58E3E7;
+    width: 60px;
+    height: 30px; 
+    font-size:13px;
+    margin-left:5px;
+    margin-right:5px;
 }
 
 #postbutton {
