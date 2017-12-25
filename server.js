@@ -31,13 +31,12 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // for email
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey('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');
 var msg = {
   to: 'rshekhar@seas.upenn.edu',
   from: 'rshekhar.hardyboys@gmail.com',
-  subject: 'Sending with SendGrid is Fun',
-  text: 'and easy to do anywhere, even with Node.js',
-  html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  subject: 'Penn Connect User Authentication',
+  html: ''
 };
 
 // routes
@@ -63,7 +62,11 @@ app.post('/home', function(req, res) {
       homepage.text = "An error occured";
       res.redirect('/home');
     } else {
-      if (isRight) {
+      if (isRight === -1) {
+        homepage.text = "Check your email and Confirm your account!";
+        res.redirect('/home');
+      }
+      else if (isRight) {
         req.session.username = username;
         res.redirect('session');
       } else {
@@ -83,13 +86,18 @@ app.get('/register', function (req, res) {
 app.post('/register', function(req, res) {
    // console.log(req.body);
   //sgMail.send(msg);
-  User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, function(err) {
+  var confnum = Math.floor((Math.random() * 10000000) + 1);
+  User.addUser(req.body.firstname, req.body.lastname, req.body.username, req.body.password, confnum, function(err) {
     if (err) res.send('error' + err);
     else { 
     	//res.send('new user registered with username ' + req.body.username);
     	homepage.text = "New User Succesfully Registered! Check your email and verify your account!";
-      //msg.html = '<a href = "https://www.facebook.com/"> Facebook </a>';
-      //sgMail.send(msg);
+      console.log('SENDGRID' + process.env.SENDGRID_API_KEY);
+      var x = 'Hi! <br> Welcome to PennConnect! To confirm your account, please click on the link below! <br>';
+      x += '<a href="http://localhost:3000/confirmation/' + req.body.username +'">Confirm User Penn Connect! </a>';
+      msg.html = x;
+      console.log(msg.html);
+      sgMail.send(msg);
     	res.redirect('/home');
     }
   });
@@ -101,7 +109,17 @@ app.post('/register', function(req, res) {
 
 app.get('/confirmation/:id', function (req, res) {
   var id = req.params.id;
-
+  User.findOne({username: id}, function (err, user) {
+    if (user) {
+      console.log('CONFIRMATION' + user);
+      user.validated = true;
+      user.save(function (err) {
+        if (err) throw err;
+      });
+      homepage.text = "Account Verified! Log in!";
+      res.redirect('/home');
+    }
+  });
 });
 
 

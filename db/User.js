@@ -31,11 +31,10 @@ userSchema.pre('save', function(next) {
 
 
 
-userSchema.statics.addUser = function(firstname, lastname, username, password, cb) {
-  var newUser = new this({ firstname: firstname, lastname: lastname, username: username, password: password});
-  newUser.validated = true;
-  var x = Math.floor((Math.random() * 10000000) + 1);
-  newUser.confnum = x.toString();
+userSchema.statics.addUser = function(firstname, lastname, username, password, confnum, cb) {
+  var newUser = new this({ firstname: firstname, lastname: lastname, username: username, password: password, confnum: confnum});
+  newUser.validated = false;
+  //newUser.confnum = x.toString();
   newUser.save(cb);
 }
 
@@ -46,6 +45,7 @@ userSchema.statics.checkIfLegit = function(username, password, cb) {
     if (!user) cb('no user');
     else if (user.validated === false) {
       console.log('validation' +  user.validated);
+      cb(null, -1);
     }
     else {
       bcrypt.compare(password, user.password, function(err, isRight) {
