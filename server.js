@@ -7,8 +7,12 @@ var sgMail = require('@sendgrid/mail');
 
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
+
+/* mongoose schemas */
+
 var User = require('./db/User');
 var Post = require('./db/Post');
+var College = require('./db/college');
 
 
 app.engine('html', require('ejs').__express);
@@ -56,7 +60,7 @@ app.post('/home', function(req, res) {
   password = req.body.password;
   User.checkIfLegit(username, password, function(err, isRight) {
     if (err) {
-      homepage.text = "Username or Password was wrong";
+      homepage.text = "An error occured";
       res.redirect('/home');
     } else {
       if (isRight) {
@@ -83,11 +87,23 @@ app.post('/register', function(req, res) {
     if (err) res.send('error' + err);
     else { 
     	//res.send('new user registered with username ' + req.body.username);
-    	homepage.text = "New User Succesfully Registered! Log in!";
+    	homepage.text = "New User Succesfully Registered! Check your email and verify your account!";
+      //msg.html = '<a href = "https://www.facebook.com/"> Facebook </a>';
+      //sgMail.send(msg);
     	res.redirect('/home');
     }
   });
 });
+
+
+// --- Account confirmation --- //
+
+
+app.get('/confirmation/:id', function (req, res) {
+  var id = req.params.id;
+
+});
+
 
 // --- SESSION routes start --- ///
 

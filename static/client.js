@@ -111,17 +111,6 @@ $(document).ready(function () {
 		}
 		console.log(link);
 		window.location.href = link;
-		/*
-		 $.ajax(
-		   {url: link,
-		   	type: 'GET',
-		   	async = false,
-		   	success : function (result) {
-		   		console.log('SUCCESS AJAX REQUEST');
-		   	}
-    	   }
-    	 );
-    	 */
 	});
 
 	// ---- code for like button ---//
